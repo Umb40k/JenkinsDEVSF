@@ -9,7 +9,7 @@ node {
     def HUB_ORG="pdev@sf.com"
     def SFDC_HOST ="https://login.salesforce.com"
     def JWT_KEY_CRED_ID = "3d46dce5-02ff-4c66-a0db-1d392a6b1182"
-    //def JWT_KEY_FILE= "$JWT_KEY_DEVORG"
+    def JWT_KEY_FILE= env.JWT_KEY_DEVORG
     def DEPLOYDIR='src'
     def TEST_LEVEL='RunLocalTests'
 
@@ -22,7 +22,7 @@ node {
     println HUB_ORG
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
-    printf $JWT_KEY_DEVORG > code.key
+    printf $JWT_KEY_FILE > code.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
     stage('checkout source') {
