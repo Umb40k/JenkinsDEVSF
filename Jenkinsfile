@@ -9,7 +9,7 @@ node {
     def HUB_ORG="pdev@sf.com"
     def SFDC_HOST ="https://login.salesforce.com"
     def JWT_KEY_CRED_ID = "3d46dce5-02ff-4c66-a0db-1d392a6b1182"
-    def JWT_KEY_FILE= "$JWT_KEY_DEVORG"
+    //def JWT_KEY_FILE= "$JWT_KEY_DEVORG"
     def DEPLOYDIR='src'
     def TEST_LEVEL='RunLocalTests'
 
@@ -23,7 +23,7 @@ node {
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
     println JWT_KEY_FILE
-    //printf $JWT_KEY_CRED_ID > code.key
+    printf $JWT_KEY_DEVORG > code.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
     stage('checkout source') {
@@ -37,7 +37,7 @@ node {
         //rcl = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:logout --username ${HUB_ORG}"
         //rc = sh returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
           println 'COMMAND' 
-          rc = command "${toolbelt}/sfdx force:auth:jwt:grant --instanceurl ${SFDC_HOST} --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername"
+          rc = command "${toolbelt}/sfdx force:auth:jwt:grant --instanceurl ${SFDC_HOST} --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile code.key --setdefaultdevhubusername"
         if (rc != 0) { error 'hub org authorization failed' 
         }
             
