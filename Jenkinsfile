@@ -34,7 +34,7 @@ node {
      withCredentials([file(credentialsId:JWT_KEY_CRED_ID,variable:'jwt_key_file')]){
         stage('SFDX Login') {
         //rcl = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:logout --username ${HUB_ORG}"
-        rc= sh returnStatus:true,script:"${toolbelt}/sfdxforce:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file}  --instanceurl ${SFDC_HOST}"
+            rc = sh returnStatus: true, script: "sfdx force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST} --setalias ${HUB_ORG}"
         if(rc!=0){error'huborgauthorizationfailed'}
             
         }
