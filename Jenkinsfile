@@ -35,7 +35,7 @@ node {
         stage('SFDX Login') {
 //preLogout
         rcl = sh returnStatus: true, script: "sfdx force:auth:logout --username ${HUB_ORG}"
-/login
+//login
         rc = sh returnStatus: true, script: "sfdx force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST} --setalias ${HUB_ORG}"
         //rc = sh "sfdx force:auth:jwt:grant --clientid $CONNECTED_APP_CONSUMER_KEY --username $HUB_ORG --jwtkeyfile $jwt_key_file --instanceurl $SFDC_HOST"
             println rc
