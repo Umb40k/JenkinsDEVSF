@@ -12,14 +12,14 @@ node {
     def JWT_KEY_FILE= env.JWT_KEY_DEVORG
     println JWT_KEY_FILE
     def TEST_LEVEL='RunLocalTests'
-    def directories = getDirectories("$WORKSPACE")
+    def workspace = pwd()
 
 
 
     def CONNECTED_APP_CONSUMER_KEY="3MVG9vvlaB0y1YsJEx2GTDHujtGeAKj6n7TyOlU1EuPwwKdwAbLu0Ai_6qTXypf9N5M_T4GWsyQuvM5633wnb"
 
     println 'KEY IS' 
-    println directories 
+    println workspace
     println JWT_KEY_CRED_ID
     println HUB_ORG
     println SFDC_HOST
