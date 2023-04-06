@@ -8,7 +8,7 @@ node {
 
     def HUB_ORG=env.HUB_ORG_DH ?: "pdev@sf.com"
     def SFDC_HOST = env.SFDC_HOST_DH ?: "https://login.salesforce.com"
-    def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH ?:"fb30da20-071c-4841-abd2-4fe301b74dcf"
+    def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH ?:"3d46dce5-02ff-4c66-a0db-1d392a6b1182"
     def JWT_KEY_FILE= "/home/ubuntu/Documents/code.key"
     def DEPLOYDIR='src'
     def TEST_LEVEL='RunLocalTests'
