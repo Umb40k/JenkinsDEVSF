@@ -8,7 +8,7 @@ node {
 
     def HUB_ORG="pdev@sf.com"
     def SFDC_HOST ="https://login.salesforce.com"
-    def JWT_KEY_CRED_ID = "3d46dce5-02ff-4c66-a0db-1d392a6b1182"
+    def JWT_KEY_CRED_ID = env.JWT_KEY_CRED_ID_DH
     def JWT_KEY_FILE= env.JWT_SERVER_KEY
     println JWT_KEY_FILE
     def TEST_LEVEL='RunLocalTests'
