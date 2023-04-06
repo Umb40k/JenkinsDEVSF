@@ -22,7 +22,7 @@ node {
     println HUB_ORG
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
-    printf JWT_KEY_FILE > server.key
+    //printf JWT_KEY_FILE > server.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
     stage('checkout source') {
@@ -31,12 +31,12 @@ node {
 
     withEnv(["HOME=${env.WORKSPACE}"]) {
 
-    withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'server_key_file')]) {        
+    withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'JWT_KEY_FILE')]) {        
         stage('SFDX Login') {
         //rcl = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:logout --username ${HUB_ORG}"
         //rc = sh returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
           println 'COMMAND' 
-          rc = command "${toolbelt}/sfdx force:auth:jwt:grant --instanceurl ${SFDC_HOST} --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile server.key --setdefaultdevhubusername"
+          rc = command "${toolbelt}/sfdx force:auth:jwt:grant --instanceurl ${SFDC_HOST} --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${JWT_KEY_FILE} --setdefaultdevhubusername"
         if (rc != 0) { error 'hub org authorization failed' 
         }
             
