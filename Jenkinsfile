@@ -22,7 +22,7 @@ node {
     println HUB_ORG
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
-    printf $JWT_KEY_FILE > code.key
+    printf JWT_KEY_FILE > code.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
     stage('checkout source') {
