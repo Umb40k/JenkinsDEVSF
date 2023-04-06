@@ -9,7 +9,7 @@ node {
     def HUB_ORG=env.HUB_ORG_DH ?: "pdev@sf.com"
     def SFDC_HOST = env.SFDC_HOST_DH ?: "https://login.salesforce.com"
     def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH ?:"3d46dce5-02ff-4c66-a0db-1d392a6b1182"
-    def JWT_KEY_FILE= "/home/ubuntu/Documents/code.key"
+    def JWT_KEY_FILE= env.JWT_FILE ?:env.JWT_PATH
     def DEPLOYDIR='src'
     def TEST_LEVEL='RunLocalTests'
 
@@ -36,6 +36,7 @@ node {
         stage('SFDX Login') {
         //rcl = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:logout --username ${HUB_ORG}"
         //rc = sh returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
+          println 'COMMAND' 
           rc = command "${toolbelt}/sfdx force:auth:jwt:grant --instanceurl ${SFDC_HOST} --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername"
         if (rc != 0) { error 'hub org authorization failed' 
         }
