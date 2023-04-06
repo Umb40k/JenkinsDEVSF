@@ -23,7 +23,7 @@ node {
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
     println JWT_KEY_FILE
-    //printf $JWT_KEY_CRED_ID > server.key
+    printf $JWT_KEY_CRED_ID > code.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
     stage('checkout source') {
