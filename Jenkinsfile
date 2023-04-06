@@ -26,6 +26,9 @@ node {
     println CONNECTED_APP_CONSUMER_KEY
     workspace = workspace + '/cert/code.key'
     println workspace
+    JWT_KEY_FILE = workspace 
+    println JWT_KEY_FILE
+    
     //printf JWT_KEY_FILE > server.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
