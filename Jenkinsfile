@@ -43,10 +43,15 @@ node {
         if(rc!=0){error'hub orgauthorization failed'}
             
         }
-        stage("Convert to mdapi"){                
+       /* stage("Convert to mdapi"){                
             rc = sh returnStatus: true, script: "sfdx force:source:convert -d mdapi"
             if (rc != 0) { error 'cannot convert source to mdapi' }
+        }*/
+        stage("Calculate delta"){                
+            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output"
+            if (rc != 0) { error 'cannot calculate delta' }
         }
+        
         stage("Validate"){
             // Deploy steps here                
             rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 -c --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG} --testlevel ${TEST_LEVEL}"
