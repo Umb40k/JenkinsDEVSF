@@ -63,8 +63,9 @@ node {
             }
         }
         stage("Deploy"){
-            // Deploy steps here                
-            rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG}"
+            // Deploy steps here 
+            rc = sh returnStatus: true, script: "sfdx force:source:deploy -x package/package.xml"
+            //rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
                 sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
