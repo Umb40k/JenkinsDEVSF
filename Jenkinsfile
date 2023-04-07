@@ -52,7 +52,7 @@ node {
             rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 -c --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG} --testlevel ${TEST_LEVEL}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
-                bat "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
             }
         }
         stage("Deploy"){
@@ -60,7 +60,10 @@ node {
             rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG} --testlevel ${TEST_LEVEL}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
             }
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
+
         }
 
 
