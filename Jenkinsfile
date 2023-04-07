@@ -5,6 +5,7 @@ node {
     def BUILD_NUMBER=env.BUILD_NUMBER
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
+    def WORKSPACE = env.WORKSPACE
 
     def HUB_ORG="pdev@sf.com"
     def SFDC_HOST ="https://login.salesforce.com"
@@ -42,6 +43,24 @@ node {
         if(rc!=0){error'hub orgauthorization failed'}
             
         }
+        stage("Convert to mdapi"){                
+            rc = sh returnStatus: true, script: "sfdx force:source:convert -d mdapi"
+            if (rc != 0) { error 'cannot convert source to mdapi' }
+        }
+        stage("Run Production Validation"){
+            // Deploy steps here                
+            rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 -c --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG} --testlevel ${TEST_LEVEL}"
+            if (rc != 0) {
+                error 'Salesforce deploy and test run failed.'
+                bat "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
+            }
+        }
+        stage("Deploy"){
+            // Deploy steps here                
+            rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG_PROD} --testlevel ${PROD_TEST_LEVEL}"
+            if (rc != 0) {
+                error 'Salesforce deploy and test run failed.'
+            }
 
 
 
