@@ -33,7 +33,7 @@ node {
 
     withEnv(["HOME=${env.WORKSPACE}"]) {
      withCredentials([file(credentialsId:JWT_KEY_CRED_ID,variable:'jwt_key_file')]){
-        stage('SFDX Login') {
+        stage('Org Login') {
 //preLogout
         rcl = sh returnStatus: true, script: "sfdx force:auth:logout --targetusername ${HUB_ORG}"
 //login
@@ -47,7 +47,7 @@ node {
             rc = sh returnStatus: true, script: "sfdx force:source:convert -d mdapi"
             if (rc != 0) { error 'cannot convert source to mdapi' }
         }
-        stage("Run Production Validation"){
+        stage("Validate"){
             // Deploy steps here                
             rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 -c --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG} --testlevel ${TEST_LEVEL}"
             if (rc != 0) {
