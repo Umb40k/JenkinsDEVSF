@@ -49,9 +49,10 @@ node {
 
         }*/
         stage("Calculate delta"){                
-            sh 'echo y | sfdx plugins:install sfdx-git-delta'
-            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output ."
+            sh 'echo y | sfdx plugins:install sfdx-git-delta
+            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --ignore ignorefile --output ."
             if (rc != 0) { error 'cannot calculate delta' }
+            cat package/package.xml
         }
         
         stage("Validate"){
@@ -64,7 +65,7 @@ node {
         }
         stage("Deploy"){
             // Deploy steps here 
-            rc = sh returnStatus: true, script: "sfdx force:source:deploy -x manifest/package.xml -u ${HUB_ORG}"
+            rc = sh returnStatus: true, script: "sfdx force:source:deploy -x package/package.xml -u ${HUB_ORG}"
             //rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
