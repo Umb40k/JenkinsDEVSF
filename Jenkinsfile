@@ -46,9 +46,10 @@ node {
        /* stage("Convert to mdapi"){                
             rc = sh returnStatus: true, script: "sfdx force:source:convert -d mdapi"
             if (rc != 0) { error 'cannot convert source to mdapi' }
+
         }*/
         stage("Calculate delta"){                
-            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output"
+            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output ."
             if (rc != 0) { error 'cannot calculate delta' }
         }
         
