@@ -5,6 +5,7 @@ node {
     def BUILD_NUMBER=env.BUILD_NUMBER
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
+    def WORKSPACE = env.WORKSPACE
 
     def HUB_ORG="pdev@sf.com"
     def SFDC_HOST ="https://login.salesforce.com"
@@ -32,7 +33,7 @@ node {
 
     withEnv(["HOME=${env.WORKSPACE}"]) {
      withCredentials([file(credentialsId:JWT_KEY_CRED_ID,variable:'jwt_key_file')]){
-        stage('SFDX Login') {
+        stage('Org Login') {
 //preLogout
         rcl = sh returnStatus: true, script: "sfdx force:auth:logout --targetusername ${HUB_ORG}"
 //login
@@ -42,7 +43,37 @@ node {
         if(rc!=0){error'hub orgauthorization failed'}
             
         }
+       /* stage("Convert to mdapi"){                
+            rc = sh returnStatus: true, script: "sfdx force:source:convert -d mdapi"
+            if (rc != 0) { error 'cannot convert source to mdapi' }
 
+        }*/
+        stage("Calculate delta"){                
+            sh 'echo y | sfdx plugins:install sfdx-git-delta'
+            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output ."//--ignore ignorefile
+            if (rc != 0) { error 'cannot calculate delta' }
+            sh 'cat package/package.xml'
+        }
+        
+        stage("Validate"){
+            // Deploy steps here                
+            rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL}"
+            if (rc != 0) {
+                error 'Salesforce deploy and test run failed.'
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
+            }
+        }
+        stage("Deploy"){
+            // Deploy steps here 
+            rc = sh returnStatus: true, script: "sfdx force:source:deploy -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
+            //rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG}"
+            if (rc != 0) {
+                error 'Salesforce deploy and test run failed.'
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
+            }
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
+
+        }
 
 
      }
