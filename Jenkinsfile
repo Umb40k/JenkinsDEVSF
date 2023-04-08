@@ -63,8 +63,7 @@ node {
 rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r {}  --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}" 
 
 sh 'IFS=',' read -ra TEST_CLASSES <<< "$TEST_CLASSES"
-for TEST_CLASS in "${TEST_CLASSES[@]}"; do
-  echo "Running tests for $TEST_CLASS..."  '
+for TEST_CLASS in "${TEST_CLASSES[@]}"; '
 
 rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${TEST_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
  
