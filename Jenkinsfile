@@ -12,6 +12,7 @@ node {
     def JWT_KEY_CRED_ID = env.JWT_KEY_CRED_ID_DH
     println JWT_KEY_CRED_ID
     def TEST_LEVEL='RunLocalTests'
+    def TEST_CLASSES
 
 
 
@@ -57,9 +58,16 @@ node {
         
         stage("Validate"){
             // Deploy steps here  
-sh 'grep -rl --include=*Test.cls "@testClass\s.*" /path/to/source | xargs -I {} grep -H "@testClass" {} | awk '{print substr($0, index($0, "@testClass")+10)}' | xargs -I {}'
+//sh 'grep -rl --include=*Test.cls "@testClass\s.*" /path/to/source | xargs -I {} grep -H "@testClass" {} | awk '{print substr($0, index($0, "@testClass")+10)}' | xargs -I {}'
 
-rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r {}  --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"   
+rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r {}  --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}" 
+
+sh 'IFS=',' read -ra TEST_CLASSES <<< "$TEST_CLASSES"
+for TEST_CLASS in "${TEST_CLASSES[@]}"; do
+  echo "Running tests for $TEST_CLASS..."  '
+
+rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${TEST_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
+ 
          
 //rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL}"
             if (rc != 0) {
