@@ -56,8 +56,12 @@ node {
         }
         
         stage("Validate"){
-            // Deploy steps here                
-            rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL}"
+            // Deploy steps here  
+sh 'grep -rl --include=*Test.cls "@testClass\s.*" /path/to/source | xargs -I {} grep -H "@testClass" {} | awk '{print substr($0, index($0, "@testClass")+10)}' | xargs -I {}'
+
+rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r {}  --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"   
+         
+//rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
                 sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
