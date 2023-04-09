@@ -1,5 +1,3 @@
-/**  * @testClass TemperatureConverterTest
-*/
 @isTest
 private class TemperatureConverterTest {
     @isTest static void testWarmTemp() {
