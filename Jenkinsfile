@@ -69,6 +69,7 @@ node {
             
           APEX_CLASES = sh( script: "grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes| awk -F '@testClass ' '{print \$2}'| sort -u", returnStdout: true)//${WORKSPACE}/force-app/main/default/triggers
           //sh "awk -F '@testClass ' '{print \$2}' "
+          println ${APEX_CLASES}
           //sh "sort -u"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]"," }}''
           rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
