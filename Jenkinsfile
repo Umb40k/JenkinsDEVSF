@@ -67,7 +67,7 @@ node {
 
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             
-          sh "grep -ri -w @TestClass ${WORKSPACE}/delta/force-app/main/default/classes ${WORKSPACE}/delta/force-app/main/default/triggers"
+          sh "grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes ${WORKSPACE}/force-app/main/default/triggers"
           //sh "awk -F '@testClass ' '{print $2}' "
           sh "sort -u"
           sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]"," }}''
