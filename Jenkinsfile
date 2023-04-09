@@ -70,7 +70,7 @@ node {
           sh "grep -ri -w @TestClass ./delta/force-app/main/default/classes ./delta/force-app/main/default/triggers"
           //sh "awk -F '@testClass ' '{print $2}' "
           sh "sort -u"
-          sh "awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' } print array[nlines]}'"  
+          sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' } print array[nlines]}''
           rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${TEST_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
 
 
