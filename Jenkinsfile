@@ -75,7 +75,7 @@ node {
 
 echo "${APEX_CLASSES}"
 
-echo "'${APEX_CLASSES}' | sed 's/%//'"
+echo "'${APEX_CLASSES}' | sed 's/%//' | '${APEX_CLASSES}'"
 
 echo "${APEX_CLASSES}"
 
