@@ -67,7 +67,7 @@ node {
 
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             
-          rt = sh script:"grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes| awk -F '@testClass ' '{print \$2}'| sort -u"//${WORKSPACE}/force-app/main/default/triggers
+           sh "grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes| awk -F '@testClass ' '{print \$2}'| sort -u"//${WORKSPACE}/force-app/main/default/triggers
           //sh "awk -F '@testClass ' '{print \$2}' "
           println ${APEX_CLASES}
           //sh "sort -u"
