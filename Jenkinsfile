@@ -75,6 +75,8 @@ node {
 APEX_CLASSES = sh (script:"echo \${APEX_CLASSES}| sed 's/.$//'", returnStdout:true)
 echo "${APEX_CLASSES}"
 
+echo "'${APEX_CLASSES}' | perl -ple 'chop'"
+
 
           rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 
