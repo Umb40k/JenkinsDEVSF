@@ -67,10 +67,10 @@ node {
 
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             
-          sh "grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes "//${WORKSPACE}/force-app/main/default/triggers
+          sh "grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes | awk -F '@testClass ' '{print \$2}' | sort -u | awk '{print substr($0, index($0, "@testClass ")+10)}' "//${WORKSPACE}/force-app/main/default/triggers
           sh "awk -F '@testClass ' '{print \$2}' "
           sh "sort -u"
-          sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]"," }}''
+          //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]"," }}''
           rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${TEST_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
 
 
