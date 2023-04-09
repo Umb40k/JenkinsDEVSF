@@ -1,3 +1,6 @@
+/*
+* @testClass TestFactory
+*/
 @isTest
 public class TestFactory {
    public static Account getAccount(String accountName, Boolean doInsert) {
