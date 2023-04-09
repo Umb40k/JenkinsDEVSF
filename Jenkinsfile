@@ -72,7 +72,7 @@ node {
           
           //sh "sort -u"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]"," }}''
-println rt
+println $rt
           rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
 
 
