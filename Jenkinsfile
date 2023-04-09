@@ -72,7 +72,7 @@ node {
           
           //sh "sort -u"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
-echo "${APEX_CLASSES%?}"
+sh "APEX_CLASSES = ${APEX_CLASSES::-1}"
 echo "${APEX_CLASSES}"
 
 
