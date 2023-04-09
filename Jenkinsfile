@@ -66,7 +66,7 @@ node {
 //sh 'IFS=',' read -ra TEST_CLASSES <<< "$TEST_CLASSES" for TEST_CLASS in "${TEST_CLASSES[@]}"; '
 
           sh 'echo "--- Apex Tests to be executed ---"'
-          sh "export APEX_CLASSES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r)"
+          sh "export ${APEX_CLASES}=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r)"
           sh "echo ${APEX_CLASES}"
           rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${TEST_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
 
