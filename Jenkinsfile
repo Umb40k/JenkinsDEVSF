@@ -67,16 +67,22 @@ node {
 
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             //TESTCLASSS
-          APEX_CLASSES = sh (script: "grep -ri -w @TestClass ${WORKSPACE}/force-app/main/default/classes| awk -F '@testClass ' '{print \$2}'| sort -u| cut -d ','", returnStdout:true)//${WORKSPACE}/force-app/main/default/triggers
+          APEX_CLASSES = sh (script: "grep -ri -w @TestClass \${WORKSPACE}/force-app/main/default/classes| awk -F '@testClass ' '{print \$2}'| sort -u| sed 's/\$/,/'| tr -d '\n'", returnStdout:true)//${WORKSPACE}/force-app/main/default/triggers
           //sh "awk -F '@testClass ' '{print \$2}' '
           
           //sh "sort -u"
-          //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = $1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]"," }}''
+          //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
+
 echo "${APEX_CLASSES}"
-          rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
+
+APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}' | rev | cut -c 2- | rev", returnStdout:true)
+
+echo "${APEX_CLASSES}"
+
+          //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 
 
-//rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL}"
+rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES} --checkonly"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
                 sh "sfdx force:auth:logout -u ${HUB_ORG} -p"
