@@ -11,20 +11,20 @@ node {
     def SFDC_HOST ="https://login.salesforce.com"
     def JWT_KEY_CRED_ID = env.JWT_KEY_CRED_ID_DH
     println JWT_KEY_CRED_ID
-    def TEST_LEVEL='RunSpecifiedTests'//RunLocalTests
-	def TEST_CLASS_LIST=
+    def TEST_LEVEL='RunLocalTests'
+    def TEST_CLASSES
 
 
 
     def CONNECTED_APP_CONSUMER_KEY= env.CONNECTED_APP_CONSUMER_KEY_DH
 
-    println 'KEY IS'
+    println 'KEY IS' 
     println JWT_KEY_CRED_ID
     println HUB_ORG
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
 
-
+    
     //printf JWT_KEY_FILE > server.key
     def toolbelt = tool 'toolbelt'
     //def sfdx = tool 'sfdxtool'
@@ -42,42 +42,52 @@ node {
         //rc = sh "sfdx force:auth:jwt:grant --clientid $CONNECTED_APP_CONSUMER_KEY --username $HUB_ORG --jwtkeyfile $jwt_key_file --instanceurl $SFDC_HOST"
             println rc
         if(rc!=0){error'hub orgauthorization failed'}
-
+            
         }
-       /* stage("Convert to mdapi"){
+       /* stage("Convert to mdapi"){                
             rc = sh returnStatus: true, script: "sfdx force:source:convert -d mdapi"
             if (rc != 0) { error 'cannot convert source to mdapi' }
 
         }*/
-        stage("Calculate delta"){
+        stage("Calculate delta"){                
             sh 'echo y | sfdx plugins:install sfdx-git-delta'
             rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output ."//--ignore ignorefile
             if (rc != 0) { error 'cannot calculate delta' }
             sh 'cat package/package.xml'
         }
-
+        
         stage("Validate"){
-            // Deploy steps here
-            rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL} --runtests ${TEST_CLASS_LIST}"
+            // Deploy steps here  
+//sh 'grep -rl --include=*Test.cls "@testClass\s.*" /path/to/source | xargs -I {} grep -H "@testClass" {} | awk '{print substr($0, index($0, "@testClass")+10)}' | xargs -I {}'
+
+rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r {}  --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}" 
+
+sh 'IFS=',' read -ra TEST_CLASSES <<< "$TEST_CLASSES"
+for TEST_CLASS in "${TEST_CLASSES[@]}"; '
+
+rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${TEST_CLASSES} --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
+ 
+         
+//rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
-                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
             }
         }
         stage("Deploy"){
-            // Deploy steps here
+            // Deploy steps here 
             rc = sh returnStatus: true, script: "sfdx force:source:deploy -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
             //rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
-                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
             }
-                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"
+                sh "sfdx force:auth:logout -u ${HUB_ORG} -p"                 
 
         }
 
 
      }
-
+    
 }
 }
