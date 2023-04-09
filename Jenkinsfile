@@ -13,7 +13,7 @@ node {
     println JWT_KEY_CRED_ID
     def TEST_LEVEL='RunLocalTests'
     def TEST_CLASSES
-    def APEX_CLASES
+    def APEX_CLASSES
 
 
 
