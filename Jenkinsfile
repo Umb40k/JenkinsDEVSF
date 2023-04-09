@@ -11,7 +11,7 @@ node {
     def SFDC_HOST ="https://login.salesforce.com"
     def JWT_KEY_CRED_ID = env.JWT_KEY_CRED_ID_DH
     println JWT_KEY_CRED_ID
-    def TEST_LEVEL='RunLocalTests'
+    def TEST_LEVEL='RunSpecifiedTests'
     def TEST_CLASSES
     def APEX_CLASSES
 
@@ -75,7 +75,7 @@ node {
 
 echo "${APEX_CLASSES}"
 
-APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}' | rev | cut -c 2- | rev", returnStdout:true)
+APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}'| rev | cut -c 2- | rev", returnStdout:true)
 
 echo "${APEX_CLASSES}"
 
