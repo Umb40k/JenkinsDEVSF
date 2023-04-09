@@ -58,7 +58,7 @@ node {
 
         stage("Validate"){
             // Deploy steps here
-            sh 'cat package/package.xml | xq . | jq '.Package.types | select(.name=="ApexClass") | .members | join(",")''
+            sh 'cat package/package.xml | xq . | jq .Package.types | select(.name=="ApexClass") | .members | join(",")'
 //sh 'grep -rl --include=*Test.cls "@testClass\s.*" ${WORKSPACE}/package/package.xml | xargs -I {} grep -H "@testClass" {} | awk '{print substr($0, index($0, "@testClass")+10)}' | xargs -I {}'
 
 //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r {}  --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
