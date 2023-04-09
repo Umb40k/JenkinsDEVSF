@@ -1,5 +1,5 @@
 /*
-*@testClass TestFactory
+* @testClass TestFactory
 */
 @isTest
 public class TestFactory {

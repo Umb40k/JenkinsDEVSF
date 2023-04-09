@@ -1,3 +1,6 @@
+/* 
+* @testClass DataGenerationTest
+*/
 @isTest
 private class DataGenerationTest {
   @testSetup
