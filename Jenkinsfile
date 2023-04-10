@@ -82,7 +82,7 @@ echo "${APEX_CLASSES}"
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 
 
-rc = sh returnStatus: true, script: "sfdx force:source:deploy --checkonly --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES} --checkonly"
+rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
                 sh "sfdx force:auth:logout -u ${HUB_ORG} -p"
