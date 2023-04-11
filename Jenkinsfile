@@ -71,7 +71,7 @@ node {
 
           //sh "awk -F '@testClass ' '{print \$2}' '
 
-FIND_TEST_CLASSES_FROM_PACKAGE = sh (script:"cat package/package.xml | xq . | jq '.Package.types | select(.name=="ApexClass") | .members | join(",")'",returnStdout:true)
+FIND_TEST_CLASSES_FROM_PACKAGE = sh (script:"cat package/package.xml | xq . | jq '.Package.types | select(.name=='ApexClass') | .members | join(",")'",returnStdout:true)
 
 
           //sh "sort -u"
