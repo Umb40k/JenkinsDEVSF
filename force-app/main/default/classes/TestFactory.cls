@@ -4,7 +4,7 @@
 @isTest
 public class TestFactory {
    public static Account getAccount(String accountName, Boolean doInsert) {
-       Account account = new Account(Name = accountName);//sd
+       Account account = new Account(Name = accountName);//sdh
        if (doInsert) {
            insert account;//(+)
        }
