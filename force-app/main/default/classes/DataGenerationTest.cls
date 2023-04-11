@@ -1,5 +1,3 @@
-/**
-*/
 @isTest
 private class DataGenerationTest {
   @testSetup
