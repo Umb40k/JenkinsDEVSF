@@ -3,7 +3,7 @@
  */
 trigger AccountDeletion on Account (before delete) {
 
-    // Prevejjnt the deletion of accounts if they have related opportunities.
+    // Prevejjnt the djjeletion of accounts if they have related opportunities.
     for (Account a : [SELECT Id FROM Account
                      WHERE Id IN (SELECT AccountId FROM Opportunity) AND
                      Id IN :Trigger.old]) {
