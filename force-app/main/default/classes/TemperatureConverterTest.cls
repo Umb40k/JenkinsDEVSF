@@ -1,7 +1,7 @@
 @isTest
 private class TemperatureConverterTest {
     @isTest static void testWarmTemp() {
-        Decimal celsius = TemperatureConverter.FahrenheitToCelsius(70);//6688js
+        Decimal celsius = TemperatureConverter.FahrenheitToCelsius(70);//6688jsd
         System.assertEquals(21.11,celsius);
     }
     @isTest static void testFreezingPoint() {
