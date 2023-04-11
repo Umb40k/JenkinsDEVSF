@@ -1,8 +1,11 @@
+/**
+* @testClass DataGenerationTest
+*/
 @isTest
 private class DataGenerationTest {
   @testSetup
-  static void dataCreation() {
-      Account account = TestFactory.getAccount('Muddy Waters Inc.', true);
+  static void dataCreation() {////check ddeploy/jsdj/asahhrxsj
+      Account account = TestFactory.getAccount('Muddy Waters Inc.', true);//dsdsd
       Contact contact = TestFactory.getContact(account.Id, 'Muddy', 'Waters', true);
       Opportunity opp = New Opportunity();
       opp.Name = 'Long lost record';

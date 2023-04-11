@@ -1,9 +1,12 @@
+/**
+* @testClass TestFactory
+*/
 @isTest
 public class TestFactory {
    public static Account getAccount(String accountName, Boolean doInsert) {
-       Account account = new Account(Name = accountName);
+       Account account = new Account(Name = accountName);//sdhsdsdf
        if (doInsert) {
-           insert account;
+           insert account;//(+)
        }
        return account;
    }
