@@ -101,7 +101,6 @@ cmd = sh (script: "grep -o 'echo' ${APEX_CLASSES} | wc -l",returnStdout:true)
             
 //sh 'APEX_CLASSES=${APEX_CLASSES//$'\n'/}'
 //APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | tr -d '[:space:]'", returnStdout:true)
-ls -A $DIR
 
 cmd = sh returnStatus: true, script: "ls -A \${WORKSPACE}/force-app/main/default/classes"
 
