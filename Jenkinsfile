@@ -86,24 +86,19 @@ APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}'| rev | cut -c 2- | rev", retu
 
 echo "${APEX_CLASSES}"
  
-def cmd = false
-            
-sh  "if [[ '${APEX_CLASSES}' != '' ]]; then cmd = true ; fi"
-            
-echo "${cmd}"
 
-            
 
+        
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 //${WORKSPACE}/package/package.xml
 //sh (script:"[ -z '${APEX_CLASSES}' ] && echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}' || echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}'")
-if (cmd) {          
-echo "TEST RUN NEEDED FOR CHECKONLY"
-rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"
-}
-else{
+if (APEX_CLASSES.isEmpty()) {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
+}
+else{
+echo "TEST RUN NEEDED FOR CHECKONLY"
+rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"
 }
      
 
