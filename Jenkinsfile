@@ -88,7 +88,7 @@ echo "${APEX_CLASSES}"
  
 def cmd = false
             
-sh  "if [[ '${APEX_CLASSES}' != null ]]; then cmd = true  ; fi"
+sh  "if [[ '${APEX_CLASSES}' != '' ]]; then cmd = true ; fi"
             
 echo "${cmd}"
 
