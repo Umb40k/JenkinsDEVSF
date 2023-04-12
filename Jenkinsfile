@@ -88,7 +88,8 @@ echo "${APEX_CLASSES}"
  
 def cmd
             
-sh  "if [ -n '${APEX_CLASSES}' ]; then cmd = true else cmd = false ; fi"
+sh  "if [ -z '${APEX_CLASSES}' ]; then echo 'TRUE' cmd = true else echo 'FALSE' cmd = false ; fi"
+
             
 
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
