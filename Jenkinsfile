@@ -69,7 +69,7 @@ node {
 
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             //TESTCLASSS
-            if (APEX_CLASSES == null) {  
+            if (APEX_CLASSES == "") {  
                 echo "${APEX_CLASSES}"
 echo "null ac"
             }
