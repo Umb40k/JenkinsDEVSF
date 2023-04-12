@@ -83,7 +83,7 @@ echo "null ac"
           //sh "sort -u"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
 
-def cmd = false
+def cmd
 echo"${cmd}"
 
 echo "${APEX_CLASSES}"
@@ -105,7 +105,8 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 //sh "if [ -z "$(ls -A ${WORKSPACE}/force-app/main/default/classes)" ];then echo "Empty";else echo "Not Empty";fils -A"
 
-sh 'ls -l \${WORKSPACE}/force-app/main/default/classes'
+cmd = sh (script: "ls -l \${WORKSPACE}/force-app/main/default/classes \${WORKSPACE}/force-app/main/default/triggers",returnStdout:true)
+
 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
