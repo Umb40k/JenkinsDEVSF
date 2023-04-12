@@ -52,7 +52,7 @@ node {
         }*/
         stage("Calculate delta"){
             sh 'echo y | sfdx plugins:install sfdx-git-delta'
-            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output . --generate-delta"//--ignore ignorefile
+            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output changed-sources/ --generate-delta"//--ignore ignorefile
             if (rc != 0) { error 'cannot calculate delta' }
             sh 'cat package/package.xml'
         }
