@@ -91,7 +91,7 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 cmd = sh (script: "grep -o 'echo' ${APEX_CLASSES} | wc -l",returnStdout:true)
 
-echo"${cmd}"
+
 
 
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
@@ -105,7 +105,7 @@ echo"${cmd}"
 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
-
+echo"${cmd}"
 if ("${cmd}"== "0") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
