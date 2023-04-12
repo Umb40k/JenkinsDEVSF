@@ -70,6 +70,7 @@ node {
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             //TESTCLASSS
             if (APEX_CLASSES == null) {  
+                echo "${APEX_CLASSES}"
 echo "null ac"
             }
           APEX_CLASSES = sh (script: "grep -ri -w @TestClass \${WORKSPACE}/force-app/main/default/classes ${WORKSPACE}/force-app/main/default/triggers| awk -F '@testClass ' '{print \$2}'| sort -u| sed 's/\$/,/'| tr -d '\n'", returnStdout:true)
