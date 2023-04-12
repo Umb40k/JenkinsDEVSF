@@ -115,9 +115,9 @@ cmd2 = sh (script: "if  grep -q 'ApexTrigger' 'package/package.xml' ; then echo 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
 
-//cmd = sh (script: "echo '${cmd}' | tr -d '\n'' ; fi",returnStdout:true)
+//cmd = sh (script: "echo '${cmd}' | sed 's/\$/,/'| tr -d '\n'',returnStdout:true)
 
-//cmd2 = sh (script: "echo '${cmd2}' | tr -d '\n'' ; fi",returnStdout:true)
+//cmd2 = sh (script: "echo '${cmd2}' | sed 's/\$/,/'| tr -d '\n'',returnStdout:true)
 
 echo"${cmd}"
 echo"${cmd2}"
