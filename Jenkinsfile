@@ -84,12 +84,13 @@ echo "null ac"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
 
 def cmd = false
+echo"${cmd}"
 
 echo "${APEX_CLASSES}"
 
 APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d '\n'", returnStdout:true)
 
-cmd = sh (script: "grep -o 'echo' ${APEX_CLASSES} | wc -l",returnStdout:true)
+//cmd = sh (script: "grep -o 'echo' ${APEX_CLASSES} | wc -l",returnStdout:true)
 
 
 
