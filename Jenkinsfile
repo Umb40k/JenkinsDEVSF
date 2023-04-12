@@ -84,7 +84,9 @@ echo "null ac"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
 
 def cmd
+def cmd2
 echo"${cmd}"
+echo"${cmd2}"
 
 echo "${APEX_CLASSES}"
 
@@ -105,13 +107,19 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 //sh "if [ -z "$(ls -A ${WORKSPACE}/force-app/main/default/classes)" ];then echo "Empty";else echo "Not Empty";fils -A"
 
-cmd = sh (script: "ls -l \${WORKSPACE}/force-app/main/default/classes \${WORKSPACE}/force-app/main/default/triggers",returnStdout:true)
+cmd = sh (script: "ls -A \${WORKSPACE}/force-app/main/default/classes && echo 'empty'",returnStdout:true)
+
+cmd2 = sh (script: "ls -A \${WORKSPACE}/force-app/main/default/triggers && echo 'empty'",returnStdout:true)
 
 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
+
 echo"${cmd}"
-if ("${cmd}"== "true") {  
+
+echo"${cmd2}"
+
+if ("${cmd}"== "true" && "${cmd2}" == "") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
