@@ -119,6 +119,10 @@ echo "verify test run need"
 
 //cmd2 = sh (script: "echo '${cmd2}' | tr -d '\n'' ; fi",returnStdout:true)
 
+echo"${cmd}"
+echo"${cmd2}"
+
+
 if ("${cmd}"== "the string does not exist" && "${cmd2}" == "the string does not exist") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
