@@ -91,7 +91,9 @@ APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}'| rev | cut -c 2- | rev", retu
             //sh 'case \${APEX_CLASSES} in (*"$nl"*) \${cmd}='true';; (*)      echo no;; esac'
             
 //sh 'APEX_CLASSES=${APEX_CLASSES//$'\n'/}'
-sh "echo ${APEX_CLASSES} | tr -d '\n'"
+APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | tr -d '\n'", returnStdout:true)
+
+
 echo "${APEX_CLASSES}"
 if (${APEX_CLASSES}==null) {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
