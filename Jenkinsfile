@@ -115,9 +115,9 @@ cmd2 = sh (script: "if  grep -q 'ApexTrigger' 'package/package.xml' ; then echo 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
 
-cmd = sh (script: "echo '${cmd}' | tr -d '\n'' ; fi",returnStdout:true)
+//cmd = sh (script: "echo '${cmd}' | tr -d '\n'' ; fi",returnStdout:true)
 
-cmd2 = sh (script: "echo '${cmd2}' | tr -d '\n'' ; fi",returnStdout:true)
+//cmd2 = sh (script: "echo '${cmd2}' | tr -d '\n'' ; fi",returnStdout:true)
 
 if ("${cmd}"== "the string does not exist" && "${cmd2}" == "the string does not exist") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
