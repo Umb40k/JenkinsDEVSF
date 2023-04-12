@@ -52,7 +52,7 @@ node {
         }*/
         stage("Calculate delta"){
             sh 'echo y | sfdx plugins:install sfdx-git-delta'
-            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output changed-sources/ --generate-delta"//--ignore ignorefile
+            rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output . --generate-delta"//--ignore ignorefile
             if (rc != 0) { error 'cannot calculate delta' }
             sh 'cat package/package.xml'
         }
@@ -67,7 +67,7 @@ node {
 
           //sh "export APEX_CLASES=$(xq . < package/package.xml | jq '.Package.types | [.] | flatten | map(select(.name=="ApexClass")) | .[] | .members | [.] | flatten | map(select(. | index("*") | not)) | unique | join(",")' -r) | echo ${APEX_CLASES}"
             //TESTCLASSS
-          APEX_CLASSES = sh (script: "grep -ri -w @TestClass \${WORKSPACE}/changed-sources/force-app/main/default/classes ${WORKSPACE}/changed-sources/force-app/main/default/triggers| awk -F '@testClass ' '{print \$2}'| sort -u| sed 's/\$/,/'| tr -d '\n'", returnStdout:true)
+          APEX_CLASSES = sh (script: "grep -ri -w @TestClass \${WORKSPACE}/force-app/main/default/classes ${WORKSPACE}/force-app/main/default/triggers| awk -F '@testClass ' '{print \$2}'| sort -u| sed 's/\$/,/'| tr -d '\n'", returnStdout:true)
 
           //sh "awk -F '@testClass ' '{print \$2}' '
 
