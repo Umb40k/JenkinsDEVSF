@@ -115,8 +115,10 @@ cmd2 = sh (script: "if  grep -q 'ApexTrigger' '\${WORKSPACE}/package/package.xml
 echo "${APEX_CLASSES}"
 echo "verify test run need"
 
-sh 'echo'${cmd}' | tr -d '\n'"
-sh 'echo'${cmd2}' | tr -d '\n'"
+cmd = sh (script: "echo '${cmd}' | tr -d '\n'' ; fi",returnStdout:true)
+
+cmd2 = sh (script: "echo '${cmd2}' | tr -d '\n'' ; fi",returnStdout:true)
+
 if ("${cmd}"== "the string does not exist" && "${cmd2}" == "the string does not exist") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
