@@ -87,6 +87,7 @@ echo "${APEX_CLASSES}"
 APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}'| rev | cut -c 2- | rev", returnStdout:true)
 
 echo "${APEX_CLASSES}"
+println APEX_CLASSES
  
 
 
