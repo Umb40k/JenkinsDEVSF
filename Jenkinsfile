@@ -116,9 +116,7 @@ echo "${APEX_CLASSES}"
 echo "verify test run need"
 
 echo"${cmd}"
-
 echo"${cmd2}"
-
 if ("${cmd}"== "empty" && "${cmd2}" == "empty") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
