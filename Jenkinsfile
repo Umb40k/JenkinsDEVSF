@@ -91,7 +91,7 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
             //sh 'case \${APEX_CLASSES} in (*"$nl"*) \${cmd}='true';; (*)      echo no;; esac'
             
 //sh 'APEX_CLASSES=${APEX_CLASSES//$'\n'/}'
-APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | tr -d '[:space:]'", returnStdout:true)
+//APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | tr -d '[:space:]'", returnStdout:true)
 
 
 echo "${APEX_CLASSES}"
