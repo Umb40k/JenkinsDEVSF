@@ -5,7 +5,7 @@
 public class TestFactory {
    public static Account getAccount(String accountName, Boolean doInsert) {
        Account account = new Account(Name = accountName);//sdhsdsdfasddsg
-       if (doInsert) {
+       if (doInsert) {//ciao new
            insert account;//(+)
        }
        return account;
