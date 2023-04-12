@@ -117,7 +117,7 @@ echo "verify test run need"
 
 cmd = sh (script: "echo '${cmd}' | sed 's/\$/,/'| tr -d '\n'",returnStdout:true)
 
-cmd2 = sh (script: "echo '${cmd2}' | sed 's/\$/,/'| tr -d '\n'",returnStdout:true)
+cmd2 = sh (script: "echo '${cmd2}' | sed 's/\$/,/'",returnStdout:true)
 
 echo"${cmd}"
 echo"${cmd2}"
