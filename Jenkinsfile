@@ -109,7 +109,7 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 cmd = sh (script: "if  grep -q 'ApexClass' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
 
-cmd2 = sh (script: "if  grep -q 'Trigger' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
+cmd2 = sh (script: "if  grep -q 'ApexTrigger' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
 
 
 echo "${APEX_CLASSES}"
@@ -117,7 +117,7 @@ echo "verify test run need"
 
 echo"${cmd}"
 echo"${cmd2}"
-if ("${cmd}"== "*'empty'*" && "${cmd2}" == "*'empty'*") {  
+if ("${cmd}"== "*'the string exists'*" && "${cmd2}" == "*'the string exists'*") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
