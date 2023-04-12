@@ -107,9 +107,11 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 //sh "if [ -z "$(ls -A ${WORKSPACE}/force-app/main/default/classes)" ];then echo "Empty";else echo "Not Empty";fils -A"
 
-cmd = sh (script: "if  grep -q 'ApexClass' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
+cmd = sh (script: "if  grep -q 'ApexClass' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists
+' ; else echo 'the string does not exist' ; fi",returnStdout:true)
 
-cmd2 = sh (script: "if  grep -q 'ApexTrigger' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
+cmd2 = sh (script: "if  grep -q 'ApexTrigger' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists
+' ; else echo 'the string does not exist' ; fi",returnStdout:true)
 
 
 echo "${APEX_CLASSES}"
