@@ -103,7 +103,7 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 //sh 'APEX_CLASSES=${APEX_CLASSES//$'\n'/}'
 //APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | tr -d '[:space:]'", returnStdout:true)
 
-cmd = sh returnStatus: true, script: "ls -A \${WORKSPACE}/force-app/main/default/classes"
+sh "if [ -z "$(ls -A \${WORKSPACE}/force-app/main/default/classes)" ];then echo "Empty";else echo "Not Empty";fils -A;"
 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
