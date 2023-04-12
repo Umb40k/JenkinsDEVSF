@@ -82,9 +82,16 @@ echo "null ac"
 
           //sh "sort -u"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
-def cmd = false
+
+def cmd = 0
+
 echo "${APEX_CLASSES}"
-APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d '\n'", returnStdout:true)   
+
+APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d '\n'", returnStdout:true)
+
+cmd = sh (script: "grep -o 'echo' ${APEX_CLASSES} | wc -l",returnStdout:true)
+
+
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 //${WORKSPACE}/package/package.xml
 //cmd =  sh returnStatus: true, script: "[ '${APEX_CLASSES}' == *$'\r'* ] then; echo no test class to run ;fi"
