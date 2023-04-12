@@ -14,6 +14,7 @@ node {
     def TEST_LEVEL='RunSpecifiedTests'
     def TEST_CLASSES
     def APEX_CLASSES
+    def TEST_LEVEL_NO_RUN = 'NoTestRun'
 
 
 
@@ -86,8 +87,11 @@ echo "${APEX_CLASSES}"
 
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 //${WORKSPACE}/package/package.xml
-
-rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"
+            if(${APEX_CLASSES} <> null){
+rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"}
+            else{
+rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"}
+        }
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
                 sh "sfdx force:auth:logout -u ${HUB_ORG} -p"
@@ -95,7 +99,7 @@ rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x $
         }
         stage("Deploy"){
             // Deploy steps here
-            rc = sh returnStatus: true, script: "sfdx force:source:deploy -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG}"
+            rc = sh returnStatus: true, script: "sfdx force:source:deploy -x ${WORKSPACE}/package/package.xml -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
             //rc = sh returnStatus: true, script: "sfdx force:mdapi:deploy --wait 120 --deploydir ${WORKSPACE}/mdapi --targetusername ${HUB_ORG}"
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
