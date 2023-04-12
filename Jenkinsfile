@@ -51,7 +51,7 @@ node {
 
         }*/
         stage("Calculate delta"){
-            sh 'rm -v \${WORKSPACE}/force-app/main/default/classes/* | rm -v \${WORKSPACE}/force-app/main/default/trigger/*'
+            sh 'rm -v \${WORKSPACE}/force-app/main/default/classes/* | rm -v \${WORKSPACE}/force-app/main/default/triggers/*'
             sh 'echo y | sfdx plugins:install sfdx-git-delta'
             rc = sh returnStatus: true, script: "sfdx sgd:source:delta --to HEAD --from HEAD^ --output . --generate-delta"//--ignore ignorefile
             if (rc != 0) { error 'cannot calculate delta' }
