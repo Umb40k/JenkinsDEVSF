@@ -95,7 +95,9 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 
 echo "${APEX_CLASSES}"
-if (${APEX_CLASSES}==null) {  
+echo "verify test run need"
+
+if ("${APEX_CLASSES}"== "null") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
