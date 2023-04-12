@@ -107,9 +107,9 @@ APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | rev | cut -c 2- | rev | tr -d
 
 //sh "if [ -z "$(ls -A ${WORKSPACE}/force-app/main/default/classes)" ];then echo "Empty";else echo "Not Empty";fils -A"
 
-cmd = sh (script: "if  grep -q 'ApexClass' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist | tr -d '\n'' ; fi",returnStdout:true)
+cmd = sh (script: "if  grep -q 'ApexClass' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
 
-cmd2 = sh (script: "if  grep -q 'ApexTrigger' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist | tr -d '\n'' ; fi",returnStdout:true)
+cmd2 = sh (script: "if  grep -q 'ApexTrigger' '\${WORKSPACE}/package/package.xml' ; then echo 'the string exists' ; else echo 'the string does not exist' ; fi",returnStdout:true)
 
 
 echo "${APEX_CLASSES}"
@@ -117,7 +117,7 @@ echo "verify test run need"
 
 echo"${cmd}"
 echo"${cmd2}"
-if ("${cmd}"== "*'the string does not exist'*" && "${cmd2}" == "*'the string does not exist'*") {  
+if ("${cmd}"== "the string does not exist" && "${cmd2}" == "the string does not exist") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
