@@ -88,9 +88,11 @@ APEX_CLASSES = sh (script: "echo '${APEX_CLASSES}'| rev | cut -c 2- | rev", retu
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 //${WORKSPACE}/package/package.xml
 //cmd =  sh returnStatus: true, script: "[ '${APEX_CLASSES}' == *$'\r'* ] then; echo no test class to run ;fi"
-            sh 'case \${APEX_CLASSES} in (*"$nl"*) \${cmd}='true';; (*)      echo no;; esac'
+            //sh 'case \${APEX_CLASSES} in (*"$nl"*) \${cmd}='true';; (*)      echo no;; esac'
             
-if (cmd) {  
+sh 'APEX_CLASSES=${APEX_CLASSES//$'\n'/}'
+echo "${APEX_CLASSES}"
+if (${APEX_CLASSES}==null) {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
