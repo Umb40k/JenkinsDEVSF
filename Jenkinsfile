@@ -13,7 +13,7 @@ node {
     println JWT_KEY_CRED_ID
     def TEST_LEVEL='RunSpecifiedTests'
     def TEST_CLASSES
-    def APEX_CLASSES
+    def APEX_CLASSES = null
     def TEST_LEVEL_NO_RUN = 'NoTestRun'
 
 
@@ -92,7 +92,7 @@ echo "${APEX_CLASSES}"
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 //${WORKSPACE}/package/package.xml
 //sh (script:"[ -z '${APEX_CLASSES}' ] && echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}' || echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}'")
-if (APEX_CLASSES.isEmpty()) {  
+if (APEX_CLASSES == null) {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
