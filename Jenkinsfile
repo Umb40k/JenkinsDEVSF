@@ -83,7 +83,7 @@ echo "null ac"
           //sh "sort -u"
           //sh 'awk 'BEGIN{  nlines = 0 }  { nlines ++ ; array[nlines] = \$1  } END{  for ( i = 1 ; i < nlines ; i ++ ) { printf  array[i]',' }}''
 
-def cmd = 0
+def cmd = false
 
 echo "${APEX_CLASSES}"
 
@@ -101,12 +101,14 @@ cmd = sh (script: "grep -o 'echo' ${APEX_CLASSES} | wc -l",returnStdout:true)
             
 //sh 'APEX_CLASSES=${APEX_CLASSES//$'\n'/}'
 //APEX_CLASSES = sh (script: "echo ${APEX_CLASSES} | tr -d '[:space:]'", returnStdout:true)
+ls -A $DIR
 
+cmd = sh returnStatus: true, script: "ls -A \${WORKSPACE}/force-app/main/default/classes"
 
 echo "${APEX_CLASSES}"
 echo "verify test run need"
 echo"${cmd}"
-if ("${cmd}"== *"0"*) {  
+if ("${cmd}"== "true") {  
 echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
 }
