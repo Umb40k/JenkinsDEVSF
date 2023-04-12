@@ -91,14 +91,14 @@ echo "${APEX_CLASSES}"
 //${WORKSPACE}/package/package.xml
 //sh (script:"[ -z '${APEX_CLASSES}' ] && echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}' || echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}'")
 
-if (${APEX_CLASSES} == ''){
-    echo "NO TEST RUN NEEDED FOR CHECKONLY"
-
+if [ -z "${APEX_CLASSES}" ] 
+then
+echo "NO TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"
-        }
-else{
-    echo "TEST RUN NEEDED FOR CHECKONLY"
+else
+echo "TEST RUN NEEDED FOR CHECKONLY"
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"
+fi
         }
 
             if (rc != 0) {
