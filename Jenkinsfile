@@ -87,12 +87,14 @@ echo "${APEX_CLASSES}"
 
           //rc = sh returnStatus: true, script: "sfdx force:source:deploy -p ${WORKSPACE}/package/package.xml -l RunSpecifiedTests -r ${APEX_CLASSES} --checkonly --wait 120 -c  -u ${HUB_ORG}"
 //${WORKSPACE}/package/package.xml
-if [[ -n ${APEX_CLASSES} ]]
+sh (script:"[ -z "$APEX_CLASSES" ] && echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}' || echo 'sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}')
+
+/*
 then
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL} -r ${APEX_CLASSES}"}
 else
 rc = sh returnStatus: true, script: "sfdx force:source:deploy --wait 120 -c -x ${WORKSPACE}/package/package.xml  -u ${HUB_ORG} --testlevel ${TEST_LEVEL_NO_RUN}"}
-fi
+fi*/
 
             if (rc != 0) {
                 error 'Salesforce deploy and test run failed.'
